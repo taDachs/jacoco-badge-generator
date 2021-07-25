@@ -34,15 +34,15 @@ import pathlib
 import os
 import os.path
 
-badgeTemplate = '<svg xmlns="http://www.w3.org/2000/svg" width="104" \
+badgeTemplate = '<svg xmlns="http://www.w3.org/2000/svg" width="{4}" \
 height="20" role="img" aria-label="{3}: {0}">\
 <linearGradient id="s" x2="0" y2="100%">\
 <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>\
 <stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="r">\
-<rect width="104" height="20" rx="3" fill="#fff"/></clipPath>\
-<g clip-path="url(#r)"><rect width="61" height="20" fill="#555"/>\
+<rect width="{4}" height="20" rx="3" fill="#fff"/></clipPath>\
+<g clip-path="url(#r)"><rect width="{5}" height="20" fill="#555"/>\
 <rect x="61" width="43" height="20" fill="{1}"/>\
-<rect width="104" height="20" fill="url(#s)"/></g>\
+<rect width="{4}" height="20" fill="url(#s)"/></g>\
 <g fill="#fff" text-anchor="middle" \
 font-family="Verdana,Geneva,DejaVu Sans,sans-serif" \
 text-rendering="geometricPrecision" font-size="110">\
@@ -58,21 +58,29 @@ transform="scale(.1)" fill="#fff" textLength="{2}">{0}</text>\
 
 defaultColors = [ "#4c1", "#97ca00", "#a4a61d", "#dfb317", "#fe7d37", "#e05d44" ]
 
-def generateBadge(covStr, color, badgeType="coverage") :
+def generateBadge(covStr, color, badgeType="coverage", message=None) :
     """Generates the badge as a string.
 
     Keyword arguments:
     covStr - The coverage as a string.
     color - The color for the badge.
     badgeType - The text string for a label on the badge.
+    message - The text on the left of the string
     """
+    if message is None:
+        message = badgeType
+
     if len(covStr) >= 4 :
         textLength = "330"
     elif len(covStr) >= 3 :
         textLength = "250" 
     else :
         textLength = "170"
-    return badgeTemplate.format(covStr, color, textLength, badgeType)
+    return _generateBadge(covStr, color, textLength, message)
+
+def _generateBadge(covStr, color, textLength, message):
+    textLength = len(message) * 8
+    return badgeTemplate.format(covStr, color, textLength, message, textLength + 43, textLength)
 
 def computeCoverage(fileList) :
     """Parses one or more jacoco.csv files and computes code coverage
@@ -353,6 +361,7 @@ if __name__ == "__main__" :
     failOnBranchesDecrease = sys.argv[11].lower() == "true"
     colorCutoffs = colorCutoffsStringToNumberList(sys.argv[12])
     colors = sys.argv[13].replace(',', ' ').split()
+    message = sys.argv[14]
 
     if onMissingReport not in {"fail", "quiet", "badges"} :
         print("ERROR: Invalid value for on-missing-report.")
@@ -395,12 +404,12 @@ if __name__ == "__main__" :
         if generateCoverageBadge :
             covStr, color = badgeCoverageStringColorPair(cov, colorCutoffs, colors)
             with open(coverageBadgeWithPath, "w") as badge :
-                badge.write(generateBadge(covStr, color))
+                badge.write(generateBadge(covStr, color, message=message))
 
         if generateBranchesBadge :
             covStr, color = badgeCoverageStringColorPair(branches, colorCutoffs, colors)
             with open(branchesBadgeWithPath, "w") as badge :
-                badge.write(generateBadge(covStr, color, "branches"))
+                badge.write(generateBadge(covStr, color, "branches", message=message))
 
         print("::set-output name=coverage::" + str(cov))
         print("::set-output name=branches::" + str(branches))
