@@ -83,7 +83,7 @@ def _generateBadge(covStr, color, message):
     message = message.replace('-', '--')
     message = message.replace('_', '__')
     message = message.replace(' ', '_')
-    url = f"https://img.shields.io/badge/{message}-{covStr}-{color}"
+    url = f"https://img.shields.io/badge/{message}-abc-{color}"
     r = requests.get(url, allow_redirects=True)
     print(r)
     return r.text
@@ -409,11 +409,15 @@ if __name__ == "__main__" :
 
         if generateCoverageBadge :
             covStr, color = badgeCoverageStringColorPair(cov, colorCutoffs, colors)
+            print(covStr)
+            print(color)
             with open(coverageBadgeWithPath, "w") as badge :
                 badge.write(generateBadge(covStr, color, message=message))
 
         if generateBranchesBadge :
             covStr, color = badgeCoverageStringColorPair(branches, colorCutoffs, colors)
+            print(covStr)
+            print(color)
             with open(branchesBadgeWithPath, "w") as badge :
                 badge.write(generateBadge(covStr, color, "branches", message=message))
 
