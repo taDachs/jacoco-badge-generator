@@ -83,7 +83,7 @@ def _generateBadge(covStr, color, message):
     url = f"https://img.shields.io/badge/{message}-{covStr}25-{color}"
     r = requests.get(url, allow_redirects=True)
     print(r)
-    return r
+    return r.content
 
 def computeCoverage(fileList) :
     """Parses one or more jacoco.csv files and computes code coverage
