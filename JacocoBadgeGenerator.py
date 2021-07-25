@@ -80,6 +80,9 @@ def generateBadge(covStr, color, badgeType="coverage", message=None) :
     return _generateBadge(covStr, color, message)
 
 def _generateBadge(covStr, color, message):
+    message = message.replace('-', '--')
+    message = message.replace('_', '__')
+    message = message.replace(' ', '_')
     url = f"https://img.shields.io/badge/{message}-{covStr}-{color}"
     r = requests.get(url, allow_redirects=True)
     print(r)
