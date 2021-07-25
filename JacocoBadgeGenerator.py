@@ -71,19 +71,13 @@ def generateBadge(covStr, color, badgeType="coverage", message=None) :
     if message is None:
         message = badgeType
 
-    if len(covStr) >= 4 :
-        textLength = "330"
-    elif len(covStr) >= 3 :
-        textLength = "250" 
-    else :
-        textLength = "170"
     return _generateBadge(covStr, color, message)
 
 def _generateBadge(covStr, color, message):
     message = message.replace('-', '--')
     message = message.replace('_', '__')
     message = message.replace(' ', '_')
-    url = f"https://img.shields.io/badge/{message}-abc-{color[1:]}"
+    url = f"https://img.shields.io/badge/{message}-{covStr}25-{color[1:]}"
     r = requests.get(url, allow_redirects=True)
     return r.text
 
