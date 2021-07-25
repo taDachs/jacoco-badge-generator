@@ -41,7 +41,7 @@ height="20" role="img" aria-label="{3}: {0}">\
 <stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="r">\
 <rect width="{4}" height="20" rx="3" fill="#fff"/></clipPath>\
 <g clip-path="url(#r)"><rect width="{5}" height="20" fill="#555"/>\
-<rect x="61" width="43" height="20" fill="{1}"/>\
+<rect x="{5}" width="43" height="20" fill="{1}"/>\
 <rect width="{4}" height="20" fill="url(#s)"/></g>\
 <g fill="#fff" text-anchor="middle" \
 font-family="Verdana,Geneva,DejaVu Sans,sans-serif" \
