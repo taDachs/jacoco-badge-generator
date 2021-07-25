@@ -83,9 +83,8 @@ def _generateBadge(covStr, color, message):
     message = message.replace('-', '--')
     message = message.replace('_', '__')
     message = message.replace(' ', '_')
-    url = f"https://img.shields.io/badge/{message}-abc-{color}"
+    url = f"https://img.shields.io/badge/{message}-abc-{color[1:]}"
     r = requests.get(url, allow_redirects=True)
-    print(r)
     return r.text
 
 def computeCoverage(fileList) :
