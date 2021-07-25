@@ -3,4 +3,6 @@
 # Licensed under the MIT License
 FROM cicirello/pyaction-lite:3
 COPY JacocoBadgeGenerator.py /JacocoBadgeGenerator.py
+run python3 -m ensurepip --default-pip
+RUN python3 -m pip install requests
 ENTRYPOINT ["/JacocoBadgeGenerator.py"]
