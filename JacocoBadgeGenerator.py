@@ -33,6 +33,7 @@ import math
 import pathlib
 import os
 import os.path
+import requests
 
 badgeTemplate = '<svg xmlns="http://www.w3.org/2000/svg" width="{4}" \
 height="20" role="img" aria-label="{3}: {0}">\
@@ -48,7 +49,7 @@ font-family="Verdana,Geneva,DejaVu Sans,sans-serif" \
 text-rendering="geometricPrecision" font-size="110">\
 <text aria-hidden="true" x="315" y="150" fill="#010101" \
 fill-opacity=".3" transform="scale(.1)" textLength="510">{3}</text>\
-<text x="315" y="140" transform="scale(.1)" fill="#fff" \
+<text x="{5}" y="140" transform="scale(.1)" fill="#fff" \
 textLength="510">{3}</text>\
 <text aria-hidden="true" x="815" y="150" \
 fill="#010101" fill-opacity=".3" transform="scale(.1)" \
@@ -76,11 +77,13 @@ def generateBadge(covStr, color, badgeType="coverage", message=None) :
         textLength = "250" 
     else :
         textLength = "170"
-    return _generateBadge(covStr, color, textLength, message)
+    return _generateBadge(covStr, color, message)
 
-def _generateBadge(covStr, color, textLength, message):
-    textLength = len(message) * 8
-    return badgeTemplate.format(covStr, color, textLength, message, textLength + 43, textLength)
+def _generateBadge(covStr, color, message):
+    url = f"https://img.shields.io/badge/{message}-{covStr}25-{color}"
+    r = requests.get(url, allow_redirects=True)
+    print(r)
+    return r
 
 def computeCoverage(fileList) :
     """Parses one or more jacoco.csv files and computes code coverage
